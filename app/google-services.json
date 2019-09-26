@@ -1,0 +1,44 @@
+{
+  "project_info": {
+    "project_number": "560189605237",
+    "firebase_url": "https://nevelnex-c2523.firebaseio.com",
+    "project_id": "nevelnex-c2523",
+    "storage_bucket": "nevelnex-c2523.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:560189605237:android:2845b14790788716",
+        "android_client_info": {
+          "package_name": "hutsalod.game.nevelnex"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "560189605237-ns8jemapd78ks1e0r6d3uh06ji8j71e2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hutsalod.game.nevelnex",
+            "certificate_hash": "99ab6f3c53c1088de9384e192eb7db1f8ca009b6"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAR2ob_NLck-6HcsZErvyT-uIE3MHgkf-0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "560189605237-eqfgl9ot5nhj5064h7ikb9ar922talle.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

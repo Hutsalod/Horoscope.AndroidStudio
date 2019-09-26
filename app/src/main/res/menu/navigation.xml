@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_history"
+        android:icon="@drawable/person"
+        android:title="Гороскоп" />
+
+    <item
+        android:id="@+id/navigation_vs"
+        android:icon="@drawable/love"
+        android:title="Сердце" />
+
+    <item
+        android:id="@+id/navigation_hand"
+        android:icon="@drawable/hands"
+        android:title="Рука" />
+    <item
+        android:id="@+id/navigation_cout"
+        android:icon="@drawable/cout"
+        android:title="Числа" />
+
+    <item
+        android:id="@+id/navigation_setting"
+        android:icon="@drawable/setting"
+        android:title="Найстройки" />
+
+</menu>

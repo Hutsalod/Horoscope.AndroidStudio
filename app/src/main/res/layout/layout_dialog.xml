@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fons"
+    android:orientation="vertical">
+
+
+    <ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="4dp">
+
+    <LinearLayout
+        android:id="@+id/btn_logout1"
+        style="@style/sidebar_list_item"
+        android:orientation="horizontal"
+        tools:ignore="OnClick">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="14dp"
+            app:srcCompat="@drawable/ic_zod9" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="@string/h1"
+            android:textAppearance="?attr/textAppearanceListItemSmall"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/btn_logout2"
+        style="@style/sidebar_list_item"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="14dp"
+            app:srcCompat="@drawable/ic_zod7" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="@string/h2"
+            android:textAppearance="?attr/textAppearanceListItemSmall"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/btn_logout3"
+        style="@style/sidebar_list_item"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="14dp"
+            app:srcCompat="@drawable/ic_zod5" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="@string/h3"
+            android:textAppearance="?attr/textAppearanceListItemSmall"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/btn_logout4"
+        style="@style/sidebar_list_item"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="14dp"
+            app:srcCompat="@drawable/ic_zod4" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="@string/h4"
+            android:textAppearance="?attr/textAppearanceListItemSmall"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/btn_logout5"
+        style="@style/sidebar_list_item"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="14dp"
+            app:srcCompat="@drawable/ic_zod3" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/h5"
+            android:layout_marginLeft="20dp"
+            android:textColor="#FFFFFF"
+            android:textAppearance="?attr/textAppearanceListItemSmall" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/btn_logout6"
+        style="@style/sidebar_list_item"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="14dp"
+            app:srcCompat="@drawable/ic_zod6" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/h6"
+            android:layout_marginLeft="20dp"
+            android:textColor="#FFFFFF"
+            android:textAppearance="?attr/textAppearanceListItemSmall" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/btn_logout7"
+        style="@style/sidebar_list_item"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="14dp"
+            app:srcCompat="@drawable/ic_zod11" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/h7"
+            android:layout_marginLeft="20dp"
+            android:textColor="#FFFFFF"
+            android:textAppearance="?attr/textAppearanceListItemSmall" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/btn_logout8"
+        style="@style/sidebar_list_item"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="14dp"
+            app:srcCompat="@drawable/ic_zod12" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/h8"
+            android:layout_marginLeft="20dp"
+            android:textColor="#FFFFFF"
+            android:textAppearance="?attr/textAppearanceListItemSmall" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/btn_logout9"
+        style="@style/sidebar_list_item"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="14dp"
+            app:srcCompat="@drawable/ic_zod10" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/h9"
+            android:layout_marginLeft="20dp"
+            android:textColor="#FFFFFF"
+            android:textAppearance="?attr/textAppearanceListItemSmall" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/btn_logout10"
+        style="@style/sidebar_list_item"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="14dp"
+            app:srcCompat="@drawable/ic_zod2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/h10"
+            android:layout_marginLeft="20dp"
+            android:textColor="#FFFFFF"
+            android:textAppearance="?attr/textAppearanceListItemSmall" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/btn_logout11"
+        style="@style/sidebar_list_item"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="14dp"
+            app:srcCompat="@drawable/ic_zod8" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/h11"
+            android:layout_marginLeft="20dp"
+            android:textColor="#FFFFFF"
+            android:textAppearance="?attr/textAppearanceListItemSmall" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/btn_logout12"
+        style="@style/sidebar_list_item"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="14dp"
+            app:srcCompat="@drawable/ic_zod1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/h12"
+            android:layout_marginLeft="20dp"
+            android:textColor="#FFFFFF"
+            android:textAppearance="?attr/textAppearanceListItemSmall" />
+    </LinearLayout>
+
+    </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

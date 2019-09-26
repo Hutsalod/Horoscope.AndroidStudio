@@ -1,0 +1,41 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+
+    <style name="MyDatePickerDialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <!-- this is new -->
+        <item name="colorAccent">#FFFFFF</item>
+
+        <item name="android:datePickerStyle">@style/MyDatePickerStyle</item>
+        <item name="android:colorAccent" tools:targetApi="lollipop">#FFFFFF</item>
+    </style>
+
+    <style name="MyDatePickerStyle" parent="@android:style/Widget.Material.Light.DatePicker" tools:targetApi="lollipop">
+        <item name="android:headerBackground">#FFFFFF</item>
+        <item name="android:calendarTextColor" tools:targetApi="lollipop">#FFFFFF</item>
+        <item name="android:dayOfWeekBackground" tools:targetApi="lollipop">#FFFFFF</item>
+        <item name="android:yearListSelectorColor" tools:targetApi="lollipop">#FFFFFF</item>
+        <item name="android:datePickerMode" tools:targetApi="lollipop">calendar</item>
+        <item name="android:minDate">01/01/2000</item>
+    </style>
+
+    <style name="MySwitch" parent="Theme.AppCompat.Light">
+        <!-- активное состояние (30% прозрачности для фона) -->
+        <item name="colorControlActivated">#FFFFFF</item>
+
+        <!-- неактивное состояние ползунка -->
+        <item name="colorSwitchThumbNormal">#FFFFFF</item>
+
+        <!-- цвет дорожки для неактивного состояния (30% прозрачности) -->
+        <item name="android:colorForeground">#FFFFFF</item>
+    </style>
+
+
+</resources>
