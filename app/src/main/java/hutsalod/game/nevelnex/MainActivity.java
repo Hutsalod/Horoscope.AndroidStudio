@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.graphics.drawable.Drawable;
@@ -55,6 +56,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.TextureView;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
@@ -106,38 +108,24 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
     private RadioButton radio1,radio3;
     private ScrollView history,loves,cout;
     private String floor;
-    File photoFile;
     ProgressBar love,sex,kar,load;
     static ProgressBar bar1,bar2,bar3;
     RadioGroup rg,radioFloor;
     SharedPreferences sPref;
     SensorManager sensorManager;
-    SurfaceView surfaceView;
-    Camera camera;
-    FrameLayout frameLayout;
     private DatePicker datePicker;
     private static final String TAG = "AndroidCameraApi";
-    private Button takePictureButton;
-    private TextureView textureView;
-    private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
-    static {
-        ORIENTATIONS.append(Surface.ROTATION_0, 90);
-        ORIENTATIONS.append(Surface.ROTATION_90, 0);
-        ORIENTATIONS.append(Surface.ROTATION_180, 270);
-        ORIENTATIONS.append(Surface.ROTATION_270, 180);
-    }
-    private String cameraId;
-    protected CameraDevice cameraDevice;
-    protected CameraCaptureSession cameraCaptureSessions;
-    protected CaptureRequest captureRequest;
-    protected CaptureRequest.Builder captureRequestBuilder;
-    private Size imageDimension;
-    private ImageReader imageReader;
-    private File file;
-    private static final int REQUEST_CAMERA_PERMISSION = 200;
-    private boolean mFlashSupported;
-    private Handler mBackgroundHandler;
-    private HandlerThread mBackgroundThread;
+
+    private Camera mCamera;
+    private CameraPreview mPreview;
+    private Camera.PictureCallback mPicture;
+    private Button capture, switchCamera;
+    private Context myContext;
+    private LinearLayout cameraPreview;
+    private boolean cameraFront = false;
+    public static Bitmap bitmap;
+
+    private boolean dial=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,8 +179,7 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
         radio1 = (RadioButton) findViewById(R.id.radioButton3);
         radio3 = (RadioButton) findViewById(R.id.radioButton);
 
-        File pictures = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        photoFile = new File(pictures, "myphoto.jpg");
+
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
@@ -205,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
             case 2: radio3.setChecked(true);
                 break;}
 
-        sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
+
         love = findViewById(R.id.progressBar);
         sex = findViewById(R.id.progressBar2);
         kar = findViewById(R.id.progressBar3);
@@ -245,8 +232,6 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
 
         StartStatus(st);
 
-
-
         toUsersZodiac.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -254,9 +239,14 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
             }
         });
 
-        textureView = (TextureView) findViewById(R.id.texture);
-        assert textureView != null;
-        textureView.setSurfaceTextureListener(textureListener);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        myContext = this;
+
+        mCamera =  Camera.open();
+        mCamera.setDisplayOrientation(90);
+        cameraPreview = (LinearLayout) findViewById(R.id.cPreview);
+        mPreview = new CameraPreview(myContext, mCamera);
+        cameraPreview.addView(mPreview);
 
 }
 
@@ -563,22 +553,6 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
         }
     }
 
-
-    public void onClickPicture(View view) {
-        camera.takePicture(null, null, new Camera.PictureCallback() {
-            @Override
-            public void onPictureTaken(byte[] data, Camera camera) {
-                try {
-                    FileOutputStream fos = new FileOutputStream(photoFile);
-                    fos.write(data);
-                    fos.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -609,6 +583,8 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
                     history.clearAnimation();
                     cout.clearAnimation();
                     seting.clearAnimation();
+
+                    mCamera.startPreview();
                     return true;
                 case R.id.navigation_vs:
                     loves.setVisibility(View.VISIBLE);
@@ -621,7 +597,9 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
                     home.clearAnimation();
                     cout.clearAnimation();
                     seting.clearAnimation();
-                    //openDialog();
+                    if (dial==false)
+                    openDialog();
+                    dial=true;
                     return true;
                 case R.id.navigation_cout:
                     cout.setVisibility(View.VISIBLE);
@@ -666,7 +644,7 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
 
     public void Start(View view) {
         if(cameraSet==0) {
-            textureView.setVisibility(View.GONE);
+            cameraPreview.setVisibility(View.GONE);
             handfon.setVisibility(View.GONE);
             start.setVisibility(View.GONE);
             load.setVisibility(View.VISIBLE);
@@ -711,7 +689,7 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
             }.start();
         }
         if(cameraSet==1) {
-            textureView.setVisibility(View.VISIBLE);
+            cameraPreview.setVisibility(View.VISIBLE);
             handfon.setVisibility(View.VISIBLE);
             start.setVisibility(View.VISIBLE);
             herom.setVisibility(View.GONE);
@@ -771,165 +749,80 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
         ed.commit();
     }
 
-    TextureView.SurfaceTextureListener textureListener = new TextureView.SurfaceTextureListener() {
-        @Override
-        public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-            //open your camera here
-            openCamera();
+
+
+
+    private int findFrontFacingCamera() {
+
+        int cameraId = -1;
+        // Search for the front facing camera
+        int numberOfCameras = Camera.getNumberOfCameras();
+        for (int i = 0; i < numberOfCameras; i++) {
+            Camera.CameraInfo info = new Camera.CameraInfo();
+            Camera.getCameraInfo(i, info);
+            if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+                cameraId = i;
+                cameraFront = true;
+                break;
+            }
         }
-        @Override
-        public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-            // Transform you image captured size according to the surface width and height
-        }
-        @Override
-        public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
-            return false;
-        }
-        @Override
-        public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-        }
-    };
-    private final CameraDevice.StateCallback stateCallback = new CameraDevice.StateCallback() {
-        @Override
-        public void onOpened(CameraDevice camera) {
-            //This is called when the camera is open
-            Log.e(TAG, "onOpened");
-            cameraDevice = camera;
-            createCameraPreview();
-        }
-        @Override
-        public void onDisconnected(CameraDevice camera) {
-            cameraDevice.close();
-        }
-        @Override
-        public void onError(CameraDevice camera, int error) {
-            cameraDevice.close();
-            cameraDevice = null;
-        }
-    };
-    final CameraCaptureSession.CaptureCallback captureCallbackListener = new CameraCaptureSession.CaptureCallback() {
-        @Override
-        public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result) {
-            super.onCaptureCompleted(session, request, result);
-            Toast.makeText(MainActivity.this, "Saved:" + file, Toast.LENGTH_SHORT).show();
-            createCameraPreview();
-        }
-    };
-    protected void startBackgroundThread() {
-        mBackgroundThread = new HandlerThread("Camera Background");
-        mBackgroundThread.start();
-        mBackgroundHandler = new Handler(mBackgroundThread.getLooper());
+        return cameraId;
+
     }
-    protected void stopBackgroundThread() {
-        mBackgroundThread.quitSafely();
-        try {
-            mBackgroundThread.join();
-            mBackgroundThread = null;
-            mBackgroundHandler = null;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+
+    private int findBackFacingCamera() {
+        int cameraId = -1;
+        //Search for the back facing camera
+        //get the number of cameras
+        int numberOfCameras = Camera.getNumberOfCameras();
+        //for every camera check
+        for (int i = 0; i < numberOfCameras; i++) {
+            Camera.CameraInfo info = new Camera.CameraInfo();
+            Camera.getCameraInfo(i, info);
+            if (info.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
+                cameraId = i;
+                cameraFront = false;
+                break;
+
+            }
+
+        }
+        return cameraId;
+    }
+
+    public void onResume() {
+
+        super.onResume();
+        if(mCamera == null) {
+            mCamera = Camera.open();
+            mCamera.setDisplayOrientation(90);
+            mPreview.refreshCamera(mCamera);
+            Log.d("nu", "null");
+        }else {
+            Log.d("nu","no null");
+        }
+
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //when on Pause, release camera in order to be used from other applications
+        releaseCamera();
+    }
+
+    private void releaseCamera() {
+        // stop and release camera
+        if (mCamera != null) {
+            mCamera.stopPreview();
+            mCamera.setPreviewCallback(null);
+            mCamera.release();
+            mCamera = null;
         }
     }
 
-    protected void createCameraPreview() {
-        try {
-            SurfaceTexture texture = textureView.getSurfaceTexture();
-            assert texture != null;
-            texture.setDefaultBufferSize(imageDimension.getWidth(), imageDimension.getHeight());
-            Surface surface = new Surface(texture);
-            captureRequestBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
-            captureRequestBuilder.addTarget(surface);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                cameraDevice.createCaptureSession(Arrays.asList(surface), new CameraCaptureSession.StateCallback(){
-                    @Override
-                    public void onConfigured(@NonNull CameraCaptureSession cameraCaptureSession) {
-                        //The camera is already closed
-                        if (null == cameraDevice) {
-                            return;
-                        }
-                        // When the session is ready, we start displaying the preview.
-                        cameraCaptureSessions = cameraCaptureSession;
-                        updatePreview();
-                    }
-                    @Override
-                    public void onConfigureFailed(@NonNull CameraCaptureSession cameraCaptureSession) {
-                        Toast.makeText(MainActivity.this, "Configuration change", Toast.LENGTH_SHORT).show();
-                    }
-                }, null);
-            }
-        } catch (CameraAccessException e) {
-            e.printStackTrace();
-        }
-    }
-    private void openCamera() {
-        CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
-        Log.e(TAG, "is camera open");
-        try {
-            cameraId = manager.getCameraIdList()[0];
-            CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);
-            StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
-            assert map != null;
-            imageDimension = map.getOutputSizes(SurfaceTexture.class)[0];
-            // Add permission for camera and let user grant the permission
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CAMERA_PERMISSION);
-                return;
-            }
-            manager.openCamera(cameraId, stateCallback, null);
-        } catch (CameraAccessException e) {
-            e.printStackTrace();
-        }
-        Log.e(TAG, "openCamera X");
-    }
-    protected void updatePreview() {
-        if(null == cameraDevice) {
-            Log.e(TAG, "updatePreview error, return");
-        }
-        captureRequestBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
-        try {
-            cameraCaptureSessions.setRepeatingRequest(captureRequestBuilder.build(), null, mBackgroundHandler);
-        } catch (CameraAccessException e) {
-            e.printStackTrace();
-        }
-    }
-    private void closeCamera() {
-        if (null != cameraDevice) {
-            cameraDevice.close();
-            cameraDevice = null;
-        }
-        if (null != imageReader) {
-            imageReader.close();
-            imageReader = null;
-        }
-    }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_CAMERA_PERMISSION) {
-            if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
-                // close the app
-                Toast.makeText(MainActivity.this, "Sorry!!!, you can't use this app without granting permission", Toast.LENGTH_LONG).show();
-                finish();
-            }
-        }
-    }
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.e(TAG, "onResume");
-        startBackgroundThread();
-        if (textureView.isAvailable()) {
-            openCamera();
-        } else {
-            textureView.setSurfaceTextureListener(textureListener);
-        }
-    }
-    @Override
-    protected void onPause() {
-        Log.e(TAG, "onPause");
-        //closeCamera();
-        stopBackgroundThread();
-        super.onPause();
-    }
+
 }
 
 

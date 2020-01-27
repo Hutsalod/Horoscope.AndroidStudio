@@ -40,7 +40,7 @@ public class Menu extends AppCompatActivity {
         sPref = getSharedPreferences("MyPref", MODE_PRIVATE);
         final double st = Double.parseDouble(sPref.getString(SAVED_TEXT, "0"));
 
-        countDownTimer = new CountDownTimer(4000, 1000) {
+        countDownTimer = new CountDownTimer(3000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
             }

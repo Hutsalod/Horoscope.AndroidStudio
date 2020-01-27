@@ -14,6 +14,6 @@
         android:fromAlpha="1.0"
         android:interpolator="@android:anim/accelerate_interpolator"
         android:toAlpha="0.0"
-        android:startOffset="3000"/>
+        android:startOffset="1800"/>
 
 </set>

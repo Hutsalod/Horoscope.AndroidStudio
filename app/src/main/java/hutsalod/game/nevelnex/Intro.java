@@ -48,10 +48,10 @@ public class Intro extends AppCompatActivity {
         sPref = getSharedPreferences("MyPref", MODE_PRIVATE);
         SharedPreferences.Editor ed =  sPref.edit();
         ed.commit();
-        if(sPref.getInt("Intro", '0')=='1'){
-            Intent intents = new Intent(Intro.this, Menu.class);
-            startActivity(intents);
-        }
+       // if(sPref.getInt("Intro", '0')=='1'){
+
+            startActivity(new Intent(Intro.this, Menu.class));
+     //   }
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         dotsLayout = (LinearLayout) findViewById(R.id.layoutDots);
         btnSkip = (Button) findViewById(R.id.btn_skip);

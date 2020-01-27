@@ -72,6 +72,7 @@ public class ExampleDialog extends AppCompatDialogFragment {
             case(10):westatus.setText(R.string.h10);vsy=6;break;
             case(11):westatus.setText(R.string.h11);vsy=7;break;
             case(12):westatus.setText(R.string.h12);vsy=8;break;
+            default:westatus.setText(R.string.h1);vsy=5;break;
         }
         dismiss();
         proc = 100-vss-vsy;
