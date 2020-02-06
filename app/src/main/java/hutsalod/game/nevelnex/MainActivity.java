@@ -1,6 +1,7 @@
 package hutsalod.game.nevelnex;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -92,6 +93,7 @@ import static hutsalod.game.nevelnex.R.drawable.ic_refresh;
 
 
 public class MainActivity extends AppCompatActivity implements ExampleDialog.ExampleDialogListener {
+    private final int REQ_DANGERS_PERMISSION = 2;
     static TextView herom,spil,today,tommorow,signs,status,stlove,stsex,kars,youstatus,westatus,zrlove,zrsex,life,txtVs,lol2,lol3,signsTwo,
     intes,lifeCout,bonusCout,happyCout;
     static ImageView image,handfon,toUsersZodiac,youUsersZodiac,ic_zodiac;
@@ -119,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
     private Camera mCamera;
     private CameraPreview mPreview;
     private Camera.PictureCallback mPicture;
-    private Button capture, switchCamera;
+    private boolean stE = false;
     private Context myContext;
     private LinearLayout cameraPreview;
     private boolean cameraFront = false;
@@ -232,6 +234,8 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
 
         StartStatus(st);
 
+        cameraPreview = (LinearLayout) findViewById(R.id.cPreview);
+
         toUsersZodiac.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -241,13 +245,17 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         myContext = this;
+        if(	PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)) {
+            mCamera = Camera.open();
+            mCamera.setDisplayOrientation(90);
+            mPreview = new CameraPreview(myContext, mCamera);
+            cameraPreview.addView(mPreview);
+        }else {
+            stE=true;
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA},
+                    REQ_DANGERS_PERMISSION);
 
-        mCamera =  Camera.open();
-        mCamera.setDisplayOrientation(90);
-        cameraPreview = (LinearLayout) findViewById(R.id.cPreview);
-        mPreview = new CameraPreview(myContext, mCamera);
-        cameraPreview.addView(mPreview);
-
+        }
 }
 
     public void StartStatus(double st){
@@ -584,7 +592,18 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
                     cout.clearAnimation();
                     seting.clearAnimation();
 
+            if(PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA)  && stE==false){
                     mCamera.startPreview();
+                }else  if(PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) && stE==true)
+            {
+                mCamera = Camera.open();
+                mCamera.setDisplayOrientation(90);
+                mPreview = new CameraPreview(myContext, mCamera);
+                cameraPreview.addView(mPreview);
+                mCamera.startPreview();
+                stE=false;
+            }
+
                     return true;
                 case R.id.navigation_vs:
                     loves.setVisibility(View.VISIBLE);
@@ -791,15 +810,16 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
     }
 
     public void onResume() {
-
         super.onResume();
-        if(mCamera == null) {
-            mCamera = Camera.open();
-            mCamera.setDisplayOrientation(90);
-            mPreview.refreshCamera(mCamera);
-            Log.d("nu", "null");
-        }else {
-            Log.d("nu","no null");
+        if(	PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) && stE==false) {
+            if (mCamera == null) {
+                mCamera = Camera.open();
+                mCamera.setDisplayOrientation(90);
+                mPreview.refreshCamera(mCamera);
+                Log.d("nu", "null");
+            } else {
+                Log.d("nu", "no null");
+            }
         }
 
     }
@@ -809,7 +829,10 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
     protected void onPause() {
         super.onPause();
         //when on Pause, release camera in order to be used from other applications
-        releaseCamera();
+      /*  if(	PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA)) {
+            releaseCamera();
+        }*/
+
     }
 
     private void releaseCamera() {
