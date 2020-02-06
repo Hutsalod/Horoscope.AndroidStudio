@@ -332,7 +332,7 @@ public class MainActivity extends AppCompatActivity implements ExampleDialog.Exa
             signs.setText(R.string.signs9);
             progres(93,90,98,9);
         }
-        if(st>=12.22 && st<=1.20){
+        if(st>=12.22 || st<=1.20){
             status.setText(R.string.h10);
             spil.setText(R.string.described10);
             ic_zodiac.setImageResource(R.drawable.ic_zod2);
